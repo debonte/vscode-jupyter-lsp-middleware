@@ -4,6 +4,7 @@ import { Disposable, NotebookDocument, Uri } from 'vscode';
 import { DocumentSelector, LanguageClient, Middleware } from 'vscode-languageclient/node';
 
 import { HidingMiddlewareAddon } from './hidingMiddlewareAddon';
+import { LspInteractiveWindowMiddlewareAddon } from './lspInteractiveWindowMiddlewareAddon';
 import { NotebookMiddlewareAddon } from './notebookMiddlewareAddon';
 import { PylanceMiddlewareAddon } from './pylanceMiddlewareAddon';
 
@@ -49,4 +50,10 @@ export function createPylanceMiddleware(
     // LanguageClients are created per interpreter (as they start) with a selector for all notebooks
     // Middleware swallows all requests for notebooks that don't match itself (isDocumentAllowed returns false)
     return new PylanceMiddlewareAddon(getClient, cellSelector, pythonPath, isDocumentAllowed, getNotebookHeader);
+}
+
+export function createLspInteractiveWindowMiddleware(
+    getClient: () => LanguageClient | undefined
+): LspInteractiveWindowMiddlewareAddon {
+    return new LspInteractiveWindowMiddlewareAddon(getClient);
 }
